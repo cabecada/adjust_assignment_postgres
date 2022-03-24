@@ -1,0 +1,3 @@
+comment = 'custom aggregate to return min -> max'
+default_version = '0.0.1'
+relocatable = true

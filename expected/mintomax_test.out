@@ -1,0 +1,13 @@
+create extension mintomax;
+select array_to_string(mintomax(x), '->') from generate_series(1, 5) x;
+ array_to_string 
+-----------------
+ 1->5
+(1 row)
+
+select array_to_string(mintomax(x), '::') from generate_series(1, 5) x;
+ array_to_string 
+-----------------
+ 1::5
+(1 row)
+
