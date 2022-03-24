@@ -8,8 +8,8 @@ RETURNS anyarray LANGUAGE sql IMMUTABLE STRICT AS $$
 $$;
 
 CREATE OR REPLACE FUNCTION minmax_final(anyarray)
-RETURNS text LANGUAGE sql IMMUTABLE STRICT AS $$
-	SELECT case when $1 is NULL then NULL else $1[1]::text || ' -> ' || $1[2]::text END;
+RETURNS anyarray LANGUAGE sql IMMUTABLE STRICT AS $$
+	SELECT $1;
 $$;
 
 CREATE AGGREGATE minmax(anyelement) (
@@ -18,4 +18,28 @@ CREATE AGGREGATE minmax(anyelement) (
         finalfunc = minmax_final,
         initcond = '{NULL, NULL}'
 );
+
+/*
+example=# table t;
+ col1 | col2
+------+------
+    1 |    1
+    2 |    0
+    3 |    1
+    4 |    0
+    5 |    1
+    6 |    0
+    7 |    1
+    8 |    0
+    9 |    1
+   10 |    0
+(10 rows)
+
+example=# select array_to_string(minmax(col1), '->') as min_to_max, col2 from t group by col2;
+ min_to_max | col2
+------------+------
+ 2->10      |    0
+ 1->9       |    1
+(2 rows)
+*/
 
