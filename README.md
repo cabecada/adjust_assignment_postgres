@@ -72,7 +72,11 @@ testdb=# select array_to_string(mintomax(x), '->') from generate_series(1, 5) x;
  1->5
 (1 row)
 
-testdb=# \q
+testdb=# select array_to_string(mintomax(x), '->') from generate_series(current_date - '1 day'::interval, current_date, '1 day'::interval) x;
+             array_to_string
+------------------------------------------
+ 2022-03-23 00:00:00->2022-03-24 00:00:00
+(1 row)
 
 
 ```
